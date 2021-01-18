@@ -34,3 +34,26 @@ module.exports.logIn = async (req, res) => {
         res.status(400).send(err.message)
     }
 }
+
+module.exports.getInfo = async (req, res) => {
+    try {
+        const token = req.headers.authorization
+            ? req.headers.authorization.split(" ")[1]
+            : ""
+
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+        const userInfo = jwt.decode(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+
+        const user = await User.findOne({ _id: userInfo._id })
+        if (!user) throw new Error("User doesn't exist")
+
+        const data = {
+            _id: userInfo._id,
+            email: userInfo.email
+        }
+
+        res.status(200).json({ data })
+    } catch (err) {
+        res.status(400).send(err.message)
+    }
+}
