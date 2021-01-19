@@ -17,9 +17,9 @@ const userSchema = new Schema({
     },
     pets: [
         new Schema({
-            petId: { type: Number, required: true },
-            buyTime: { type: Number, required: true },
-            sellTime: { type: Number }
+            _id: false,
+            idPet: { type: String, required: true },
+            buyTime: { type: Number, required: true }
         })
     ],
     gold: {

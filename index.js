@@ -38,3 +38,6 @@ const accountRoute = require("./routes/account.route")
 app.use("/account", accountRoute)
 
 app.use(auth)
+
+const userRoute = require("./routes/user.route")
+app.use("/user", userRoute)
