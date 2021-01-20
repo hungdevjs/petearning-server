@@ -41,3 +41,6 @@ app.use(auth)
 
 const userRoute = require("./routes/user.route")
 app.use("/user", userRoute)
+
+const petRoute = require("./routes/pet.route")
+app.use("/pets", petRoute)

@@ -47,3 +47,35 @@ module.exports.getDashboard = async (req, res) => {
         res.status(400).send(err.message)
     }
 }
+
+module.exports.exchange = async (req, res) => {
+    try {
+        const { userId } = req
+        const { option, quantity } = req.body// option = "gold" || "cash"
+
+        const user = await User.findOne({ _id: userId })
+        if (!user) throw new Error("User doesn't exist")
+
+        if (!user[option] || user[option] < quantity) throw new Error("Not enough to exchange")
+
+        if (!["gold", "cash"].includes(option)) throw new Error("Invalid option")
+
+        const exchangedQuantity = option === "gold"
+            ? Math.round(quantity / process.env.GOLDPERCASH, 2)
+            : quantity * process.env.GOLDPERCASH
+
+        user[option] = user[option] - quantity
+
+        if (option === "gold") {
+            user.cash = user.cash + exchangedQuantity
+        } else {
+            user.gold = user.gold + exchangedQuantity
+        }
+
+        await user.save()
+
+        res.sendStatus(200)
+    } catch (err) {
+        res.status(400).send(err.message)
+    }
+}
