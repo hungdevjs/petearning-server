@@ -3,7 +3,7 @@ const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
 
-const auth = require("./middlewares/auth")
+const { auth } = require("./middlewares")
 
 require("dotenv").config()
 
@@ -34,13 +34,11 @@ connection.once("open", () =>
     console.log("MongoDB database connected successfully!")
 )
 
-const accountRoute = require("./routes/account.route")
+const { accountRoute, userRoute, petRoute } = require("./routes")
 app.use("/account", accountRoute)
 
 app.use(auth)
 
-const userRoute = require("./routes/user.route")
 app.use("/user", userRoute)
 
-const petRoute = require("./routes/pet.route")
 app.use("/pets", petRoute)

@@ -2,8 +2,8 @@ const express = require("express")
 
 const router = express.Router()
 
-const controller = require("../controllers/pet.controller")
+const { petController } = require("../controllers")
 
-router.get("/", controller.get)
+router.get("/", petController.get)
 
 module.exports = router
