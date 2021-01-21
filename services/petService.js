@@ -1,4 +1,4 @@
-const Pet = require("../models/petModel")
+const { Pet } = require("../models")
 
 const get = async () => {
     const pets = await Pet.find()

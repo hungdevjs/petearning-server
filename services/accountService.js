@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const passwordHash = require("password-hash")
-const User = require("../models/userModel")
+const { User } = require("../models")
 
 const logIn = async userInfo => {
     const { email, password } = userInfo

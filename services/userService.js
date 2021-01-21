@@ -1,7 +1,6 @@
 const _ = require("lodash")
 
-const User = require("../models/userModel")
-const Pet = require("../models/petModel")
+const { User, Pet } = require("../models")
 
 const { helper } = require("../utils")
 
