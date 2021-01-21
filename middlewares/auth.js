@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const { common } = require("../utils")
 
 module.exports = (req, res, next) => {
-    const token = common.getToken()
+    const token = common.getToken(req)
 
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
