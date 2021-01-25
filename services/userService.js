@@ -34,15 +34,15 @@ const getDashboard = async userId => {
 
     return {
         pets,
-        gold: user.gold,
-        cash: user.cash
+        gold: Math.round(user.gold),
+        cash: user.cash.toFixed(2)
     }
 }
 
 const exchange = async ({ userId, option, quantity }) => {
     const user = await User.findOne({ _id: userId })
     if (!user) throw new Error("User doesn't exist")
-
+    if (quantity <= 0) throw new Error("Amount must be greater than 0")
     if (!user[option] || user[option] < quantity) throw new Error("Not enough to exchange")
 
     if (!["gold", "cash"].includes(option)) throw new Error("Invalid option")
