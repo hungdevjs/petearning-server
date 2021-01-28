@@ -10,6 +10,18 @@ const get = async (req, res) => {
     }
 }
 
+const buy = async (req, res) => {
+    try {
+        const { userId } = req
+        const { pets } = req.body
+        await petService.buy(userId, pets)
+        res.status(200).end()
+    } catch (err) {
+        res.status(400).send(err.message)
+    }
+}
+
 module.exports = {
-    get
+    get,
+    buy
 }
