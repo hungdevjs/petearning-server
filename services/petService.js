@@ -45,7 +45,34 @@ const buy = async (userId, pets) => {
     await user.save()
 }
 
+const sell = async (userId, pet) => {
+    const user = await User.findOne({ _id: userId })
+    if (!user) throw new Error("User doesn't exist")
+
+    const sellPet = await Pet.findOne({ _id: pet._id })
+    if (!sellPet) throw new Error("Pet doesn't exist")
+    if (!pet.quantity) throw new Error("Invalid pet quantity")
+
+    if (user.pets.filter(p => p._id === sellPet._id).length < sellPet.quantity) throw new Error("User doesn't have enough pets")
+
+    pet.sellPrice = sellPet.sellPrice
+
+    const totalPrice = pet.sellPrice * pet.quantity
+
+    const sellPets = user.pets
+        .filter(p => p.idPet === pet._id)
+        .sort((p1, p2) => p2.buyTime - p1.buyTime)
+        .slice(0, pet.quantity)
+
+    user.pets = user.pets.filter(p => !sellPets.find(sp => sp._id === p._id && sp.buyTime === p.buyTime))
+
+    user.gold = user.gold + totalPrice
+
+    await user.save()
+}
+
 module.exports = {
     get,
-    buy
+    buy,
+    sell
 }

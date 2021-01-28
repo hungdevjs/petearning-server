@@ -21,7 +21,19 @@ const buy = async (req, res) => {
     }
 }
 
+const sell = async (req, res) => {
+    try {
+        const { userId } = req
+        const { pet } = req.body
+        await petService.sell(userId, pet)
+        res.status(200).end()
+    } catch (err) {
+        res.status(400).send(err.message)
+    }
+}
+
 module.exports = {
     get,
-    buy
+    buy,
+    sell
 }
