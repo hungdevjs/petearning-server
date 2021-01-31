@@ -62,7 +62,28 @@ const exchange = async ({ userId, option, quantity }) => {
     await user.save()
 }
 
+const collect = async userId => {
+    const user = await User.findOne({ _id: userId })
+    if (!user) throw new Error("User doesn't exist")
+
+    const allPets = await Pet.find()
+
+    let totalProfit = 0
+    const now = new Date().getTime()
+    user.pets.map(pet => {
+        const thisPet = allPets.find(p => p._id.toString() === pet.idPet)
+        totalProfit += helper.calculateProfit({ buyTime: pet.buyTime, goldPerSecond: thisPet.goldPerSecond })
+        pet.buyTime = now
+        return pet
+    })
+
+    user.gold += totalProfit
+
+    await user.save()
+}
+
 module.exports = {
     getDashboard,
-    exchange
+    exchange,
+    collect
 }

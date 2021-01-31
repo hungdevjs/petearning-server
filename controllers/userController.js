@@ -25,7 +25,19 @@ const exchange = async (req, res) => {
     }
 }
 
+const collect = async (req, res) => {
+    try {
+        const { userId } = req
+        await userService.collect(userId)
+
+        res.sendStatus(200)
+    } catch (err) {
+        res.status(400).send(err.message)
+    }
+}
+
 module.exports = {
     getDashboard,
-    exchange
+    exchange,
+    collect
 }

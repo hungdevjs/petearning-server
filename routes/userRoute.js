@@ -8,4 +8,6 @@ router.get("/dashboard", userController.getDashboard)
 
 router.post("/exchange", userController.exchange)
 
+router.post("/collect", userController.collect)
+
 module.exports = router
